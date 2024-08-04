@@ -10,25 +10,25 @@ if "messages" not in st.session_state:
         {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
     ]
 
-if "user_input" not in st.session_state:
-    st.session_state["user_input"] = ""
-
 # チャットボットとやりとりする関数
 def communicate():
-    messages = st.session_state["messages"]
-    user_message = {"role": "user", "content": st.session_state["user_input"]}
-    messages.append(user_message)
+    try:
+        messages = st.session_state["messages"]
+        user_message = {"role": "user", "content": st.session_state["user_input"]}
+        messages.append(user_message)
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages=messages
-    )
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=messages
+        )
 
-    bot_message = response["choices"][0]["message"]["content"]
-    messages.append({"role": "assistant", "content": bot_message})
+        bot_message = response.choices[0].message["content"]
+        messages.append({"role": "assistant", "content": bot_message})
 
-    # 入力欄を消去
-    st.session_state["user_input"] = "" 
+        # 入力欄を消去
+        st.session_state["user_input"] = ""
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
 
 # ユーザーインターフェイスの構築
 st.title("My AI Assistant")
