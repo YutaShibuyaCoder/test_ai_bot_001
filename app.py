@@ -12,22 +12,17 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
+    messages = st.session_state["messages"]
+    user_message = {"role": "user", "content": st.session_state["user_input"]}
+    messages.append(user_message)
+    
     try:
-        messages = st.session_state["messages"]
-        user_message = {"role": "user", "content": st.session_state["user_input"]}
-        messages.append(user_message)
-
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages
         )
-
         bot_message = response.choices[0].message["content"]
         messages.append({"role": "assistant", "content": bot_message})
-
-        # 新しいセッションキーを使用して入力欄をリセット
-        st.session_state["new_input"] = ""
-        st.experimental_rerun()
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
@@ -35,12 +30,16 @@ def communicate():
 st.title("My AI Assistant")
 st.write("ChatGPT APIを使ったチャットボットです。")
 
-# 新しいセッションキーを使用
-user_input = st.text_input("メッセージを入力してください。", key="new_input")
-if st.button("送信"):
-    st.session_state["user_input"] = st.session_state["new_input"]
-    communicate()
+# テキスト入力
+user_input = st.text_input("メッセージを入力してください。", key="user_input")
 
+# 送信ボタン
+if st.button("送信"):
+    if user_input:  # 入力が空でない場合のみ実行
+        st.session_state["user_input"] = user_input
+        communicate()
+
+# チャット履歴の表示
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
     for message in reversed(messages[1:]):  # 直近のメッセージを上に
