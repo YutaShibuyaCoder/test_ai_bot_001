@@ -15,8 +15,8 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    if st.session_state.user_input and st.session_state.user_input.strip():
-        user_message = st.session_state.user_input
+    user_message = st.session_state.user_input.strip()
+    if user_message:
         st.session_state.messages.append({"role": "user", "content": user_message})
         
         try:
@@ -44,23 +44,24 @@ with chat_container:
         else:
             st.write("AI: " + message["content"])
 
-# 入力欄と送信ボタンを画面最下部に固定
+# 入力欄と送信ボタン
 input_container = st.container()
 with input_container:
     col1, col2 = st.columns([4, 1])
     with col1:
-        st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+        user_input = st.text_input("メッセージを入力してください。", key="user_input")
     with col2:
-        st.button("送信", on_click=communicate)
+        if st.button("送信"):
+            communicate()
 
 # カスタムCSS
 st.markdown("""
 <style>
 .stApp {
-    padding-bottom: 100px;
+    padding-bottom: 60px;
 }
 [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
-    height: calc(100vh - 200px);
+    height: calc(100vh - 250px);
     overflow-y: auto;
 }
 .stTextInput, .stButton {
