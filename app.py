@@ -58,7 +58,9 @@ st.markdown("""
     padding-bottom: 60px;
 }
 .chat-container {
-    padding: 0 10%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
     height: calc(100vh - 160px);
@@ -67,8 +69,10 @@ st.markdown("""
 .stTextInput {
     position: fixed;
     bottom: 20px;
-    width: 80%;
-    left: 10%;
+    max-width: 760px;
+    width: calc(100% - 40px);
+    left: 50%;
+    transform: translateX(-50%);
 }
 .stTextInput > div > div > input {
     font-size: 16px;
@@ -78,7 +82,6 @@ st.markdown("""
 .chat-message {
     display: flex;
     margin-bottom: 10px;
-    max-width: 80%;
 }
 .chat-message span {
     font-size: 16px;
@@ -86,6 +89,7 @@ st.markdown("""
     display: inline-block;
     padding: 8px 12px;
     border-radius: 18px;
+    max-width: 70%;
 }
 .chat-message.user {
     justify-content: flex-end;
