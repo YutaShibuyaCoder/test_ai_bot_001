@@ -15,20 +15,21 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    user_message = st.session_state.user_input
-    st.session_state.messages.append({"role": "user", "content": user_message})
-    
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=st.session_state.messages
-        )
-        bot_message = response.choices[0].message["content"]
-        st.session_state.messages.append({"role": "assistant", "content": bot_message})
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-    
-    st.session_state.user_input = ""  # 入力欄をクリア
+    user_message = st.session_state.user_input.strip()
+    if user_message:  # メッセージが空でない場合のみ処理
+        st.session_state.messages.append({"role": "user", "content": user_message})
+        
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=st.session_state.messages
+            )
+            bot_message = response.choices[0].message["content"]
+            st.session_state.messages.append({"role": "assistant", "content": bot_message})
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+        
+        st.session_state.user_input = ""  # 入力欄をクリア
 
 # ユーザーインターフェイスの構築
 st.title("My AI Assistant")
@@ -48,7 +49,7 @@ input_container = st.container()
 with input_container:
     col1, col2 = st.columns([4, 1])
     with col1:
-        user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+        user_input = st.text_input("メッセージを入力してください。", key="user_input")
     with col2:
         st.button("送信", on_click=communicate)
 
