@@ -35,7 +35,7 @@ st.title("My AI Assistant")
 st.write("ChatGPT APIを使ったチャットボットです。")
 
 # テキスト入力欄と送信ボタン
-st.text_input("メッセージを入力してください。", key="user_input")
+user_input = st.text_input("メッセージを入力してください。", key="user_input")
 if st.button("送信"):
     communicate()
 
