@@ -58,7 +58,7 @@ st.markdown("""
     padding-bottom: 60px;
 }
 .chat-container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -69,7 +69,7 @@ st.markdown("""
 .stTextInput {
     position: fixed;
     bottom: 20px;
-    max-width: 560px;
+    max-width: 760px;
     width: calc(100% - 40px);
     left: 50%;
     transform: translateX(-50%);
@@ -81,7 +81,6 @@ st.markdown("""
 }
 .chat-message {
     display: flex;
-    justify-content: center;
     margin-bottom: 8px;
 }
 .chat-message span {
@@ -90,17 +89,23 @@ st.markdown("""
     display: inline-block;
     padding: 8px 12px;
     border-radius: 18px;
-    max-width: 80%;
+    max-width: 70%;
+}
+.chat-message.user {
+    justify-content: flex-end;
+}
+.chat-message.ai {
+    justify-content: flex-start;
 }
 .chat-message.user span {
     background-color: #5cb85c;
     color: white;
-    margin-left: auto;
+    margin-right: 20px;
 }
 .chat-message.ai span {
     background-color: #f1f0f0;
     color: black;
-    margin-right: auto;
+    margin-left: 20px;
 }
 </style>
 """, unsafe_allow_html=True)
