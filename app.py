@@ -18,15 +18,13 @@ def communicate():
         messages.append(user_message)
 
         response = openai.ChatCompletion.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo",
             messages=messages
         )
 
         bot_message = response.choices[0].message["content"]
         messages.append({"role": "assistant", "content": bot_message})
 
-        # 入力欄を消去
-        st.session_state["user_input"] = ""
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
@@ -35,9 +33,13 @@ st.title("My AI Assistant")
 st.write("ChatGPT APIを使ったチャットボットです。")
 
 # テキスト入力欄と送信ボタン
-user_input = st.text_input("メッセージを入力してください。", key="user_input")
+if "user_input" not in st.session_state:
+    st.session_state["user_input"] = ""
+
+user_input = st.text_input("メッセージを入力してください。", key="user_input", value=st.session_state["user_input"])
 if st.button("送信"):
     communicate()
+    st.session_state["user_input"] = ""  # 入力欄を消去
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
