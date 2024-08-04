@@ -32,8 +32,8 @@ def communicate():
         st.session_state.user_input = ""  # 入力欄をクリア
 
 # ユーザーインターフェイスの構築
-st.title("My AI Assistant")
-st.write("ChatGPT APIを使ったチャットボットです。")
+st.markdown("<h1 style='text-align: center; color: #333;'>My AI Assistant</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666;'>ChatGPT APIを使ったチャットボットです。</p>", unsafe_allow_html=True)
 
 # チャット履歴の表示
 chat_container = st.container()
@@ -41,29 +41,36 @@ with chat_container:
     st.markdown('<div class="chat-container">', unsafe_allow_html=True)
     for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
         if message["role"] == "user":
-            st.markdown(f'<div class="chat-message user"><div class="icon">👤</div><span>{message["content"]}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message user"><div class="icon">👤</div><div class="message-content">{message["content"]}</div></div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="chat-message ai"><div class="icon">🤖</div><span>{message["content"]}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message ai"><div class="icon">🤖</div><div class="message-content">{message["content"]}</div></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # 入力欄
 input_container = st.container()
 with input_container:
-    st.text_input("メッセージを入力してください（Enterで送信）", key="user_input", on_change=communicate)
+    st.text_input("ChatGPT にメッセージを送信する", key="user_input", on_change=communicate)
 
 # カスタムCSS
 st.markdown("""
 <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
 .stApp {
-    padding-bottom: 60px;
+    padding-bottom: 80px;
 }
 .chat-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 200px);
     overflow-y: auto;
 }
 .stTextInput {
@@ -76,35 +83,42 @@ st.markdown("""
 }
 .stTextInput > div > div > input {
     font-size: 16px;
-    padding: 10px 15px;
-    border-radius: 20px;
+    padding: 12px 20px;
+    border-radius: 24px;
+    border: 1px solid #ddd;
+    background-color: #f0f2f5;
 }
 .chat-message {
     display: flex;
-    align-items: flex-end;
-    margin-bottom: 12px;
+    align-items: flex-start;
+    margin-bottom: 20px;
 }
 .chat-message .icon {
     font-size: 24px;
-    margin: 0 8px;
+    margin-right: 12px;
+    min-width: 30px;
 }
-.chat-message span {
+.chat-message .message-content {
     font-size: 16px;
-    line-height: 1.4;
-    display: inline-block;
-    padding: 8px 12px;
+    line-height: 1.5;
+    padding: 12px 16px;
     border-radius: 18px;
-    max-width: 70%;
+    max-width: calc(100% - 50px);
+    word-wrap: break-word;
 }
 .chat-message.user {
     flex-direction: row-reverse;
 }
-.chat-message.user span {
-    background-color: #5cb85c;
+.chat-message.user .icon {
+    margin-right: 0;
+    margin-left: 12px;
+}
+.chat-message.user .message-content {
+    background-color: #0084ff;
     color: white;
 }
-.chat-message.ai span {
-    background-color: #f1f0f0;
+.chat-message.ai .message-content {
+    background-color: #f0f2f5;
     color: black;
 }
 </style>
