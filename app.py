@@ -25,6 +25,8 @@ def communicate():
         bot_message = response.choices[0].message["content"]
         messages.append({"role": "assistant", "content": bot_message})
 
+        # 入力欄を消去する方法を変更
+        st.session_state["user_input"] = ""
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
@@ -36,10 +38,9 @@ st.write("ChatGPT APIを使ったチャットボットです。")
 if "user_input" not in st.session_state:
     st.session_state["user_input"] = ""
 
-user_input = st.text_input("メッセージを入力してください。", key="user_input", value=st.session_state["user_input"])
+user_input = st.text_input("メッセージを入力してください。", key="user_input")
 if st.button("送信"):
     communicate()
-    st.session_state["user_input"] = ""  # 入力欄を消去
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
