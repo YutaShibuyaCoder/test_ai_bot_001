@@ -31,13 +31,6 @@ def communicate():
         
         st.session_state.user_input = ""  # 入力欄をクリア
 
-# メッセージを表示する関数
-def display_message(role, content):
-    if role == "user":
-        st.markdown(f'<div class="chat-message user"><div class="message-content">{content}</div></div>', unsafe_allow_html=True)
-    else:
-        st.markdown(f'<div class="chat-message ai"><div class="message-content">{content}</div></div>', unsafe_allow_html=True)
-
 # ユーザーインターフェイスの構築
 st.title("My AI Assistant")
 st.write("ChatGPT APIを使ったチャットボットです。")
@@ -46,7 +39,10 @@ st.write("ChatGPT APIを使ったチャットボットです。")
 chat_container = st.container()
 with chat_container:
     for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
-        display_message(message["role"], message["content"])
+        if message["role"] == "user":
+            st.markdown(f'<div class="chat-message user"><b>You:</b> {message["content"]}</div>', unsafe_allow_html=True)
+        else:
+            st.markdown(f'<div class="chat-message ai"><b>AI:</b> {message["content"]}</div>', unsafe_allow_html=True)
 
 # 入力欄
 input_container = st.container()
@@ -75,32 +71,15 @@ st.markdown("""
     border-radius: 20px;
 }
 .chat-message {
-    padding: 1.5rem; 
-    border-radius: 0.5rem; 
-    margin-bottom: 1rem; 
-    display: flex;
-    flex-direction: column;
+    padding: 0.5rem 0;
+    font-size: 16px;
+    line-height: 1.4;
 }
 .chat-message.user {
-    background-color: #2b313e;
-    align-items: flex-end;
+    background-color: #f0f2f6;
 }
 .chat-message.ai {
-    background-color: #475063;
-    align-items: flex-start;
-}
-.chat-message .message-content {
-    max-width: 80%;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-}
-.chat-message.user .message-content {
-    background-color: #2196f3;
-    color: white;
-}
-.chat-message.ai .message-content {
-    background-color: #ffffff;
-    color: black;
+    background-color: white;
 }
 </style>
 """, unsafe_allow_html=True)
