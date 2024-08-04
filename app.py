@@ -41,9 +41,9 @@ with chat_container:
     st.markdown('<div class="chat-container">', unsafe_allow_html=True)
     for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
         if message["role"] == "user":
-            st.markdown(f'<div class="chat-message user"><span>👤 {message["content"]}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message user"><div class="icon">👤</div><span>{message["content"]}</span></div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="chat-message ai"><span>🤖 {message["content"]}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message ai"><div class="icon">🤖</div><span>{message["content"]}</span></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # 入力欄
@@ -81,7 +81,12 @@ st.markdown("""
 }
 .chat-message {
     display: flex;
-    margin-bottom: 8px;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+.chat-message .icon {
+    font-size: 24px;
+    margin: 0 8px;
 }
 .chat-message span {
     font-size: 16px;
@@ -92,20 +97,15 @@ st.markdown("""
     max-width: 70%;
 }
 .chat-message.user {
-    justify-content: flex-end;
-}
-.chat-message.ai {
-    justify-content: flex-start;
+    flex-direction: row-reverse;
 }
 .chat-message.user span {
     background-color: #5cb85c;
     color: white;
-    margin-right: 20px;
 }
 .chat-message.ai span {
     background-color: #f1f0f0;
     color: black;
-    margin-left: 20px;
 }
 </style>
 """, unsafe_allow_html=True)
