@@ -10,9 +10,6 @@ if "messages" not in st.session_state:
         {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
     ]
 
-if "user_input" not in st.session_state:
-    st.session_state["user_input"] = ""
-
 # チャットボットとやりとりする関数
 def communicate():
     try:
@@ -28,8 +25,9 @@ def communicate():
         bot_message = response.choices[0].message["content"]
         messages.append({"role": "assistant", "content": bot_message})
 
-        # 入力欄を消去する
-        st.session_state["user_input"] = ""
+        # 新しいセッションキーを使用して入力欄をリセット
+        st.session_state["new_input"] = ""
+        st.experimental_rerun()
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
@@ -37,9 +35,10 @@ def communicate():
 st.title("My AI Assistant")
 st.write("ChatGPT APIを使ったチャットボットです。")
 
-# テキスト入力欄と送信ボタン
-user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+# 新しいセッションキーを使用
+user_input = st.text_input("メッセージを入力してください。", key="new_input")
 if st.button("送信"):
+    st.session_state["user_input"] = st.session_state["new_input"]
     communicate()
 
 if st.session_state["messages"]:
