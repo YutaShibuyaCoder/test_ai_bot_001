@@ -38,11 +38,13 @@ st.write("ChatGPT APIを使ったチャットボットです。")
 # チャット履歴の表示
 chat_container = st.container()
 with chat_container:
+    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
     for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
         if message["role"] == "user":
             st.markdown(f'<div class="chat-message user"><span>{message["content"]}</span></div>', unsafe_allow_html=True)
         else:
             st.markdown(f'<div class="chat-message ai"><span>{message["content"]}</span></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # 入力欄
 input_container = st.container()
@@ -55,6 +57,9 @@ st.markdown("""
 .stApp {
     padding-bottom: 60px;
 }
+.chat-container {
+    padding: 0 10%;
+}
 [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
     height: calc(100vh - 160px);
     overflow-y: auto;
@@ -62,8 +67,8 @@ st.markdown("""
 .stTextInput {
     position: fixed;
     bottom: 20px;
-    width: calc(100% - 40px);
-    left: 20px;
+    width: 80%;
+    left: 10%;
 }
 .stTextInput > div > div > input {
     font-size: 16px;
@@ -71,9 +76,9 @@ st.markdown("""
     border-radius: 20px;
 }
 .chat-message {
-    display: inline-block;
+    display: flex;
     margin-bottom: 10px;
-    max-width: 70%;
+    max-width: 80%;
 }
 .chat-message span {
     font-size: 16px;
@@ -83,12 +88,10 @@ st.markdown("""
     border-radius: 18px;
 }
 .chat-message.user {
-    float: right;
-    margin-right: 10px;
+    justify-content: flex-end;
 }
 .chat-message.ai {
-    float: left;
-    margin-left: 10px;
+    justify-content: flex-start;
 }
 .chat-message.user span {
     background-color: #5cb85c;
