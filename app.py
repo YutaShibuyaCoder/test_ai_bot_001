@@ -44,14 +44,10 @@ with chat_container:
         else:
             st.write("AI: " + message["content"])
 
-# 入力欄と送信ボタンを画面最下部に固定
+# 入力欄
 input_container = st.container()
 with input_container:
-    col1, col2 = st.columns([5, 1])
-    with col1:
-        st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
-    with col2:
-        st.button("送信", on_click=communicate)
+    st.text_input("メッセージを入力してください（Enterで送信）", key="user_input", on_change=communicate)
 
 # カスタムCSS
 st.markdown("""
@@ -63,27 +59,16 @@ st.markdown("""
     height: calc(100vh - 180px);
     overflow-y: auto;
 }
-.stTextInput, .stButton {
+.stTextInput {
     position: fixed;
     bottom: 20px;
-}
-.stTextInput {
-    width: calc(85% - 20px);
+    width: calc(100% - 40px);
     left: 20px;
 }
 .stTextInput > div > div > input {
     font-size: 16px;
     padding: 10px 15px;
     border-radius: 20px;
-}
-.stButton {
-    width: 15%;
-    right: 20px;
-}
-.stButton > button {
-    border-radius: 20px;
-    padding: 10px 15px;
-    font-size: 16px;
 }
 </style>
 """, unsafe_allow_html=True)
