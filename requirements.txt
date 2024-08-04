@@ -1,3 +1,4 @@
 streamlit==1.20.0
 openai
-numpy
+numpy==1.21.6
+pandas
