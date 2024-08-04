@@ -15,8 +15,8 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    user_message = st.session_state.user_input.strip()
-    if user_message:  # メッセージが空でない場合のみ処理
+    if st.session_state.user_input and st.session_state.user_input.strip():
+        user_message = st.session_state.user_input
         st.session_state.messages.append({"role": "user", "content": user_message})
         
         try:
@@ -49,7 +49,7 @@ input_container = st.container()
 with input_container:
     col1, col2 = st.columns([4, 1])
     with col1:
-        user_input = st.text_input("メッセージを入力してください。", key="user_input")
+        st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
     with col2:
         st.button("送信", on_click=communicate)
 
