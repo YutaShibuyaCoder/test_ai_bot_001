@@ -15,8 +15,8 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    user_message = st.session_state.user_input.strip()
-    if user_message:
+    if st.session_state.user_input and st.session_state.user_input.strip():
+        user_message = st.session_state.user_input
         st.session_state.messages.append({"role": "user", "content": user_message})
         
         try:
@@ -44,24 +44,23 @@ with chat_container:
         else:
             st.write("AI: " + message["content"])
 
-# 入力欄と送信ボタン
+# 入力欄と送信ボタンを画面最下部に固定
 input_container = st.container()
 with input_container:
-    col1, col2 = st.columns([4, 1])
+    col1, col2 = st.columns([5, 1])
     with col1:
-        user_input = st.text_input("メッセージを入力してください。", key="user_input")
+        st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
     with col2:
-        if st.button("送信"):
-            communicate()
+        st.button("送信", on_click=communicate)
 
 # カスタムCSS
 st.markdown("""
 <style>
 .stApp {
-    padding-bottom: 60px;
+    padding-bottom: 80px;
 }
 [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
-    height: calc(100vh - 250px);
+    height: calc(100vh - 180px);
     overflow-y: auto;
 }
 .stTextInput, .stButton {
@@ -69,12 +68,22 @@ st.markdown("""
     bottom: 20px;
 }
 .stTextInput {
-    width: calc(80% - 20px);
+    width: calc(85% - 20px);
     left: 20px;
 }
+.stTextInput > div > div > input {
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 20px;
+}
 .stButton {
-    width: 20%;
+    width: 15%;
     right: 20px;
+}
+.stButton > button {
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
 }
 </style>
 """, unsafe_allow_html=True)
