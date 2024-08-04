@@ -41,9 +41,9 @@ with chat_container:
     st.markdown('<div class="chat-container">', unsafe_allow_html=True)
     for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
         if message["role"] == "user":
-            st.markdown(f'<div class="chat-message user"><span>{message["content"]}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message user"><span>👤 {message["content"]}</span></div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="chat-message ai"><span>{message["content"]}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message ai"><span>🤖 {message["content"]}</span></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # 入力欄
