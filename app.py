@@ -40,9 +40,9 @@ chat_container = st.container()
 with chat_container:
     for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
         if message["role"] == "user":
-            st.markdown(f'<div class="chat-message user">You: {message["content"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message user">{message["content"]}</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="chat-message ai">AI: {message["content"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="chat-message ai">{message["content"]}</div>', unsafe_allow_html=True)
 
 # 入力欄
 input_container = st.container()
@@ -53,10 +53,10 @@ with input_container:
 st.markdown("""
 <style>
 .stApp {
-    padding-bottom: 80px;
+    padding-bottom: 60px;
 }
 [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 160px);
     overflow-y: auto;
 }
 .stTextInput {
@@ -71,32 +71,25 @@ st.markdown("""
     border-radius: 20px;
 }
 .chat-message {
-    padding: 0.5rem 0;
+    padding: 8px 12px;
     font-size: 16px;
     line-height: 1.4;
-    display: flex;
+    border-radius: 15px;
     margin-bottom: 10px;
+    max-width: 70%;
+    word-wrap: break-word;
 }
 .chat-message.user {
-    justify-content: flex-end;
-}
-.chat-message.ai {
-    justify-content: flex-start;
-}
-.chat-message.user, .chat-message.ai {
-    max-width: 80%;
-    padding: 10px;
-    border-radius: 10px;
+    background-color: #5cb85c;
+    color: white;
     margin-left: auto;
-    margin-right: auto;
-}
-.chat-message.user {
-    background-color: #e1f5fe;
-    margin-left: 20%;
+    margin-right: 10px;
 }
 .chat-message.ai {
-    background-color: #f0f0f0;
-    margin-right: 20%;
+    background-color: #f1f0f0;
+    color: black;
+    margin-right: auto;
+    margin-left: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
