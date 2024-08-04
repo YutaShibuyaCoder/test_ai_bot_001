@@ -15,58 +15,64 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    messages = st.session_state.messages
-    user_message = {"role": "user", "content": st.session_state.user_input}
-    messages.append(user_message)
+    user_message = st.session_state.user_input
+    st.session_state.messages.append({"role": "user", "content": user_message})
     
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=messages
+            messages=st.session_state.messages
         )
         bot_message = response.choices[0].message["content"]
-        messages.append({"role": "assistant", "content": bot_message})
+        st.session_state.messages.append({"role": "assistant", "content": bot_message})
     except Exception as e:
         st.error(f"An error occurred: {e}")
+    
+    st.session_state.user_input = ""  # 入力欄をクリア
 
 # ユーザーインターフェイスの構築
 st.title("My AI Assistant")
 st.write("ChatGPT APIを使ったチャットボットです。")
 
-# チャット履歴の表示領域
-chat_container = st.container()
-
-# 入力欄と送信ボタンを画面最下部に固定
-input_container = st.container()
-
 # チャット履歴の表示
+chat_container = st.container()
 with chat_container:
     for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
         if message["role"] == "user":
-            st.text_area("You:", value=message["content"], height=50, disabled=True)
+            st.write("You: " + message["content"])
         else:
-            st.text_area("AI:", value=message["content"], height=50, disabled=True)
+            st.write("AI: " + message["content"])
 
-# 入力欄と送信ボタン
+# 入力欄と送信ボタンを画面最下部に固定
+input_container = st.container()
 with input_container:
     col1, col2 = st.columns([4, 1])
     with col1:
-        user_input = st.text_input("メッセージを入力してください。", key="user_input")
+        user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
     with col2:
-        if st.button("送信"):
-            if user_input:  # 入力が空でない場合のみ実行
-                communicate()
-                st.experimental_rerun()  # チャット履歴を即時更新
+        st.button("送信", on_click=communicate)
 
 # カスタムCSS
 st.markdown("""
 <style>
-.stApp [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
+.stApp {
+    padding-bottom: 100px;
+}
+[data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
     height: calc(100vh - 200px);
     overflow-y: auto;
 }
+.stTextInput, .stButton {
+    position: fixed;
+    bottom: 20px;
+}
+.stTextInput {
+    width: calc(80% - 20px);
+    left: 20px;
+}
+.stButton {
+    width: 20%;
+    right: 20px;
+}
 </style>
 """, unsafe_allow_html=True)
-
-# 最新のメッセージが見えるようにスクロール
-st.markdown('<script>window.scrollTo(0, document.body.scrollHeight);</script>', unsafe_allow_html=True)
